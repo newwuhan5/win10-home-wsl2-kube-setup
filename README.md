@@ -309,8 +309,8 @@ users:
     token: cTBscUNuNFdxNk5RUzBlVVZISkE5cHRsVVBRSFJkNWg1cmwwdFZCNGRWTT0K
 ```
 
-```bash	
-git 
+```bash
+git
 git_repos: https://github.com/dontrebootme/docker-microbot.git
 description: small container with simple webpage for clustering demo
 
@@ -483,11 +483,17 @@ kube-system   replicaset.apps/dashboard-metrics-scraper-6c4568dc68   1         1
 kube-system   replicaset.apps/coredns-86f78bb79c                     1         1         1       53m
 ```
 
+As you can see that 5 instances are all running, the port is mapped from 8088 to 31069, whic is used to access the Microbot application.
+
 #### Referecnces
 
 [Install K8S on Ubuntu](https://www.section.io/engineering-education/installing-k8-ubuntu-server/)
+
 [Snapd Issue](https://github.com/anbox/anbox/issues/265)
+
 [Resolved Snapd](https://discourse.ubuntu.com/t/using-snapd-in-wsl2/12113)
+
 [Hacking the system](https://forum.snapcraft.io/t/running-snaps-on-wsl2-insiders-only-for-now/13033)
+
 [Install Docker on Windows 10 WSL 2](https://dev.to/bartr/install-docker-on-windows-subsystem-for-linux-v2-ubuntu-5dl7)
 
