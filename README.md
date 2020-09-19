@@ -31,6 +31,7 @@ error: cannot communicate with server: Post http://localhost/v2/snaps/microk8s: 
 ~$ sudo microk8s.status --wait-ready
 ```
 
+```bash
 [sudo] password for jacky:
 microk8s is running
 high-availability: no
@@ -419,8 +420,7 @@ kube-system   replicaset.apps/metrics-server-8bbfb4bdb               1         1
 kube-system   replicaset.apps/kubernetes-dashboard-7ffd448895        1         1         1       54m
 kube-system   replicaset.apps/dashboard-metrics-scraper-6c4568dc68   1         1         1       54m
 kube-system   replicaset.apps/coredns-86f78bb79c                     1         1         1       53m
-default       replicaset.apps/microbot-5f5499d479                    5         5         5       10m
-
+```
 
 ### Referecnces:
 https://www.section.io/engineering-education/installing-k8-ubuntu-server/
