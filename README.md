@@ -1,5 +1,5 @@
 # How to setup Microk8s on Windows 10 home edition
-With hours that I spent I have finally setup MicroK8S Kubernetes on Windows 10 Home edition.  If you would like to learn Kubernetes on the single node, this will be a good start point.  In this githug project, I would list all the issues that I encountered and shared the solutions.
+With hours that I spent I have finally setup MicroK8S Kubernetes on Windows 10 Home edition.  If you would like to learn Kubernetes on the single node, this will be a good start point.  In this github project, I would list all the issues that I encountered and shared the solutions.
 
 
 ### Get ready for yor windows 10 home for WSL2
