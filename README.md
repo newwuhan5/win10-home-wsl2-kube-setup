@@ -24,6 +24,7 @@ Then I started to install microk8s, I got the error like following:
 ~$ sudo snap install microk8s --classic
 ```
 
+```bash
 [sudo] password for jacky:
 error: cannot communicate with server: Post http://localhost/v2/snaps/microk8s: dial unix /run/snapd.socket: connect: no such file or directory
 
@@ -63,6 +64,10 @@ addons:
     rbac                 # Role-Based Access Control for authorisation
     registry             # Private image registry exposed on localhost:32000
     storage              # Storage class; allocates storage from host directory
+
+```
+
+```bash
 ~$ sudo microk8s.enable dashboard dns
 Enabling Kubernetes Dashboard
 Enabling Metrics-Server
@@ -112,7 +117,9 @@ clusterrole.rbac.authorization.k8s.io/coredns created
 clusterrolebinding.rbac.authorization.k8s.io/coredns created
 Restarting kubelet
 DNS is enabled
+```
 
+```bash
 ~$ sudo microk8s.status --wait-ready
 microk8s is running
 high-availability: no
@@ -134,9 +141,15 @@ kube-system   kubernetes-dashboard-7ffd448895-6l44t        1/1     Running   0  
 kube-system   dashboard-metrics-scraper-6c4568dc68-l47jd   1/1     Running   0          6m19s
 kube-system   coredns-86f78bb79c-d9nh6                     1/1     Running   0          3m17s
 
+```
+
+```bash
 ~$ hostname -I
 172.30.159.100 172.17.0.1 10.1.201.128
 
+```
+
+```bash
 ~$ sudo microk8s.config
 apiVersion: v1
 clusters:
@@ -156,11 +169,13 @@ users:
 - name: admin
   user:
     token: RXlXV0FWa3ZEZ2wxak5Ob0JmdzhGRkgwWTErd3Vwd0UzNjhSTlRlWllMZz0K
+```
 
-JY: save name and token to:
+##### Note: save name and token to
 
 /var/snap/microk8s/current/credentials/basic_auth.csv
 
+```bash
 ~$ sudo ls -la /var/snap/microk8s/current/credentials/
 total 32
 drwxrwx---  2 root microk8s 4096 Sep 18 07:58 .
@@ -179,6 +194,9 @@ ZHl0dGtvaWszMUx5ZUpUeHlFY3djYVdLaVg2V08xTUFBZlRrUk1UVHZQdz0K,system:node:emily15
 ZHgzVGFtUDRKZC9tVnNoblowdHJrcFRHOERMNXZpeENYNkxZbXEwTFdCST0K,system:kube-controller-manager,controller
 cTBscUNuNFdxNk5RUzBlVVZISkE5cHRsVVBRSFJkNWg1cmwwdFZCNGRWTT0K,system:kube-scheduler,scheduler
 
+```
+
+```bash
 ~$ sudo cat /var/snap/microk8s/current/credentials/client.config
 apiVersion: v1
 clusters:
@@ -199,6 +217,9 @@ users:
   user:
     token: RXlXV0FWa3ZEZ2wxak5Ob0JmdzhGRkgwWTErd3Vwd0UzNjhSTlRlWllMZz0K
 
+```
+
+```bash
 ~$ sudo cat /var/snap/microk8s/current/credentials/controller.config
 apiVersion: v1
 clusters:
@@ -219,6 +240,9 @@ users:
   user:
     token: ZHgzVGFtUDRKZC9tVnNoblowdHJrcFRHOERMNXZpeENYNkxZbXEwTFdCST0K
 
+```
+
+```bash
 ~$ sudo cat /var/snap/microk8s/current/credentials/kubelet.config
 apiVersion: v1
 clusters:
@@ -238,7 +262,9 @@ users:
 - name: kubelet
   user:
     token: ZHl0dGtvaWszMUx5ZUpUeHlFY3djYVdLaVg2V08xTUFBZlRrUk1UVHZQdz0K
+```
 
+```bash
 ~$ sudo cat /var/snap/microk8s/current/credentials/proxy.config
 apiVersion: v1
 clusters:
@@ -259,6 +285,9 @@ users:
   user:
     token: eDV0bE13cWZRQUdaV0E5Qm56M0RjM3A2N0F5eXNtdE1FUjUvdnYxVUZ0ND0K
 
+```
+
+```bash
 ~$ sudo cat /var/snap/microk8s/current/credentials/scheduler.config
 apiVersion: v1
 clusters:
@@ -278,16 +307,26 @@ users:
 - name: scheduler
   user:
     token: cTBscUNuNFdxNk5RUzBlVVZISkE5cHRsVVBRSFJkNWg1cmwwdFZCNGRWTT0K
-	
+```
+
+```bash	
 git 
 git_repos: https://github.com/dontrebootme/docker-microbot.git
 description: small container with simple webpage for clustering demo
 
+```
+
+```bash
 sudo microk8s.kubectl create deployment microbot --image=dontrebootme/microbot:v1
 
+```
+
+```bash
 ~$ sudo microk8s.kubectl create deployment microbot --image=dontrebootme/microbot:v1
 deployment.apps/microbot created
+```
 
+```bash
 ~$ sudo microk8s.kubectl get pods --all-namespaces
 NAMESPACE     NAME                                         READY   STATUS    RESTARTS   AGE
 kube-system   metrics-server-8bbfb4bdb-849rc               1/1     Running   0          46m
@@ -298,8 +337,14 @@ kube-system   dashboard-metrics-scraper-6c4568dc68-l47jd   1/1     Running   0  
 kube-system   coredns-86f78bb79c-d9nh6                     1/1     Running   0          43m
 default       microbot-5f5499d479-g8qc5                    1/1     Running   0          2m12s
 
+```
+
+```bash
 ~$ sudo microk8s.kubectl scale deployment microbot --replicas=5
 deployment.apps/microbot scaled
+```
+
+```bash
 ~$ sudo microk8s.kubectl get pods --all-namespaces
 NAMESPACE     NAME                                         READY   STATUS              RESTARTS   AGE
 kube-system   metrics-server-8bbfb4bdb-849rc               1/1     Running             0          48m
@@ -313,6 +358,10 @@ default       microbot-5f5499d479-lpjfl                    0/1     Pending      
 default       microbot-5f5499d479-h4kk6                    0/1     Pending             0          8s
 default       microbot-5f5499d479-b79w2                    0/1     Pending             0          10s
 default       microbot-5f5499d479-56p9b                    0/1     ContainerCreating   0          12s
+
+```
+
+```bash
 ~$ sudo microk8s.kubectl get pods --all-namespaces
 NAMESPACE     NAME                                         READY   STATUS              RESTARTS   AGE
 kube-system   metrics-server-8bbfb4bdb-849rc               1/1     Running             0          48m
@@ -326,6 +375,9 @@ default       microbot-5f5499d479-56p9b                    0/1     ContainerCrea
 default       microbot-5f5499d479-h4kk6                    0/1     Pending             0          15s
 default       microbot-5f5499d479-lpjfl                    0/1     ContainerCreating   0          17s
 default       microbot-5f5499d479-b79w2                    0/1     ContainerCreating   0          17s
+```
+
+```bash
 ~$ sudo microk8s.kubectl get pods --all-namespaces
 NAMESPACE     NAME                                         READY   STATUS              RESTARTS   AGE
 kube-system   metrics-server-8bbfb4bdb-849rc               1/1     Running             0          48m
@@ -339,6 +391,10 @@ default       microbot-5f5499d479-lpjfl                    0/1     ContainerCrea
 default       microbot-5f5499d479-b79w2                    0/1     ContainerCreating   0          25s
 default       microbot-5f5499d479-56p9b                    0/1     ContainerCreating   0          27s
 default       microbot-5f5499d479-h4kk6                    0/1     ContainerCreating   0          23s
+
+```
+
+```bash
 ~$ sudo microk8s.kubectl get pods --all-namespaces
 NAMESPACE     NAME                                         READY   STATUS              RESTARTS   AGE
 kube-system   metrics-server-8bbfb4bdb-849rc               1/1     Running             0          48m
@@ -352,9 +408,9 @@ default       microbot-5f5499d479-lpjfl                    0/1     ContainerCrea
 default       microbot-5f5499d479-b79w2                    0/1     ContainerCreating   0          33s
 default       microbot-5f5499d479-56p9b                    0/1     ContainerCreating   0          35s
 default       microbot-5f5499d479-h4kk6                    0/1     ContainerCreating   0          31s
-~$ sudo microk8s.kubectl get pods --default
-Error: unknown flag: --default
-See 'kubectl get --help' for usage.
+```
+
+```bash
 ~$ sudo microk8s.kubectl get pods --all-namespaces
 NAMESPACE     NAME                                         READY   STATUS    RESTARTS   AGE
 kube-system   metrics-server-8bbfb4bdb-849rc               1/1     Running   0          49m
@@ -368,7 +424,9 @@ default       microbot-5f5499d479-56p9b                    1/1     Running   0  
 default       microbot-5f5499d479-lpjfl                    1/1     Running   0          86s
 default       microbot-5f5499d479-b79w2                    1/1     Running   0          86s
 default       microbot-5f5499d479-h4kk6                    1/1     Running   0          84s
+```
 
+```bash
 ~$ sudo microk8s.kubectl get pods -n default
 NAME                        READY   STATUS    RESTARTS   AGE
 microbot-5f5499d479-g8qc5   1/1     Running   0          7m
@@ -376,11 +434,14 @@ microbot-5f5499d479-56p9b   1/1     Running   0          3m24s
 microbot-5f5499d479-lpjfl   1/1     Running   0          3m22s
 microbot-5f5499d479-b79w2   1/1     Running   0          3m22s
 microbot-5f5499d479-h4kk6   1/1     Running   0          3m20s
+```
 
-
+```bash
 ~$ sudo microk8s.kubectl expose deployment microbot --type=NodePort --port=8088 --name=microbot-service
 service/microbot-service exposed
+```
 
+```bash
 ~$ sudo microk8s.kubectl get all --all-namespaces
 NAMESPACE     NAME                                             READY   STATUS    RESTARTS   AGE
 kube-system   pod/metrics-server-8bbfb4bdb-849rc               1/1     Running   0          55m
@@ -422,9 +483,11 @@ kube-system   replicaset.apps/dashboard-metrics-scraper-6c4568dc68   1         1
 kube-system   replicaset.apps/coredns-86f78bb79c                     1         1         1       53m
 ```
 
-### Referecnces:
-https://www.section.io/engineering-education/installing-k8-ubuntu-server/
-https://github.com/anbox/anbox/issues/265
-https://discourse.ubuntu.com/t/using-snapd-in-wsl2/12113
-https://forum.snapcraft.io/t/running-snaps-on-wsl2-insiders-only-for-now/13033
-https://dev.to/bartr/install-docker-on-windows-subsystem-for-linux-v2-ubuntu-5dl7
+#### Referecnces
+
+[Install K8S on Ubuntu](https://www.section.io/engineering-education/installing-k8-ubuntu-server/)
+[Snapd Issue](https://github.com/anbox/anbox/issues/265)
+[Resolved Snapd](https://discourse.ubuntu.com/t/using-snapd-in-wsl2/12113)
+[Hacking the system](https://forum.snapcraft.io/t/running-snaps-on-wsl2-insiders-only-for-now/13033)
+[Install Docker on Windows 10 WSL 2](https://dev.to/bartr/install-docker-on-windows-subsystem-for-linux-v2-ubuntu-5dl7)
+
