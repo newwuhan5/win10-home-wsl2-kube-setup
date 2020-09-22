@@ -258,8 +258,8 @@ users:
 - name: scheduler
   user:
     token: cTBscUNuNFdxNk5RUzBlVVZISkE5cHRsVVBRSFJkNWg1cmwwdFZCNGRWTT0K
-	
-git 
+
+git
 git_repos: https://github.com/dontrebootme/docker-microbot.git
 description: small container with simple webpage for clustering demo
 
@@ -277,6 +277,8 @@ kube-system   kubernetes-dashboard-7ffd448895-6l44t        1/1     Running   0  
 kube-system   dashboard-metrics-scraper-6c4568dc68-l47jd   1/1     Running   0          46m
 kube-system   coredns-86f78bb79c-d9nh6                     1/1     Running   0          43m
 default       microbot-5f5499d479-g8qc5                    1/1     Running   0          2m12s
+
+
 
 jacky@emily15:~$ sudo microk8s.kubectl scale deployment microbot --replicas=5
 deployment.apps/microbot scaled
@@ -402,3 +404,138 @@ kube-system   replicaset.apps/dashboard-metrics-scraper-6c4568dc68   1         1
 kube-system   replicaset.apps/coredns-86f78bb79c                     1         1         1       53m
 default       replicaset.apps/microbot-5f5499d479                    5         5         5       10m
 
+
+jacky@emily15:~/github$ sudo microk8s.inspect
+Inspecting Certificates
+Inspecting services
+  Service snap.microk8s.daemon-cluster-agent is running
+  Service snap.microk8s.daemon-containerd is running
+  Service snap.microk8s.daemon-apiserver is running
+  Service snap.microk8s.daemon-apiserver-kicker is running
+  Service snap.microk8s.daemon-proxy is running
+  Service snap.microk8s.daemon-kubelet is running
+  Service snap.microk8s.daemon-scheduler is running
+  Service snap.microk8s.daemon-controller-manager is running
+  Copy service arguments to the final report tarball
+Inspecting AppArmor configuration
+Gathering system information
+  Copy processes list to the final report tarball
+  Copy snap list to the final report tarball
+  Copy VM name (or none) to the final report tarball
+  Copy disk usage information to the final report tarball
+df: /proc/sys/fs/binfmt_misc: Too many levels of symbolic links
+  Copy memory usage information to the final report tarball
+  Copy server uptime to the final report tarball
+  Copy current linux distribution to the final report tarball
+  Copy openSSL information to the final report tarball
+  Copy network configuration to the final report tarball
+Inspecting kubernetes cluster
+  Inspect kubernetes cluster
+
+ WARNING:  IPtables FORWARD policy is DROP. Consider enabling traffic forwarding with: sudo iptables -P FORWARD ACCEPT
+The change can be made persistent with: sudo apt-get install iptables-persistent
+WARNING:  Docker is installed.
+File "/etc/docker/daemon.json" does not exist.
+You should create it and add the following lines:
+{
+    "insecure-registries" : ["localhost:32000"]
+}
+and then restart docker with: sudo systemctl restart docker
+Building the report tarball
+  Report tarball is at /var/snap/microk8s/1667/inspection-report-20200920_193120.tar.gz
+jacky@emily15:~/github$ sudo microk8s
+Available subcommands are:
+        add-node
+        cilium
+        config
+        ctr
+        dashboard-proxy
+        dbctl
+        disable
+        enable
+        helm
+        helm3
+        istioctl
+        join
+        juju
+        kubectl
+        leave
+        linkerd
+        refresh-certs
+        remove-node
+        reset
+        start
+        status
+        stop
+        inspect
+
+*************************************
+Install helm for CI/CD
+*************************************
+jacky@emily15:~/github$ sudo snap install helm --classic
+helm 3.3.3 from Snapcrafters installed
+
+
+*************************************
+Add docker daemon.json
+*************************************
+File "/etc/docker/daemon.json" does not exist.
+You should create it and add the following lines:
+{
+    "insecure-registries" : ["localhost:32000"]
+}
+and then restart docker with: sudo systemctl restart docker
+
+
+
+*************************************
+How to pull from docker repos:
+*************************************
+sudo docker pull nginx
+
+Then all the docker commands against this docker nginx image.
+
+Here is how to use k8s to create deployment, replica, service
+
+*************************************
+Using kubectl to create deployment
+*************************************
+sudo microk8s.kubectl create deployment nginx --image=nginx:latest
+deployment.apps/nginx created
+
+*************************************
+Using kubectl to scale replicas
+*************************************
+sudo microk8s.kubectl scale deployment nginx --replicas=2
+deployment.apps/nginx scaled
+
+*************************************
+Using kubectl to create service
+*************************************
+sudo microk8s.kubectl expose deployment nginx --type=NodePort --port=8089 --name=nginx-service
+
+
+Confirmed that new two replicas of nginx works correctly.
+
+jacky@emily15:~$ sudo microk8s.kubectl get all -n default
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/microbot-5f5499d479-g8qc5   1/1     Running   2          2d1h
+pod/microbot-5f5499d479-758lg   1/1     Running   2          2d1h
+pod/nginx-55649fd747-5s82c      1/1     Running   0          10m
+pod/nginx-55649fd747-s4f2m      1/1     Running   0          6m55s
+
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/kubernetes         ClusterIP   10.152.183.1     <none>        443/TCP          3d3h
+service/microbot-service   NodePort    10.152.183.69    <none>        8088:31069/TCP   2d1h
+service/nginx-service      NodePort    10.152.183.173   <none>        8089:32420/TCP   16s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/microbot   2/2     2            2           2d1h
+deployment.apps/nginx      2/2     2            2           10m
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/microbot-5f5499d479   2         2         2       2d1h
+replicaset.apps/nginx-55649fd747      2         2         2       10m
+
+
+*************************************
