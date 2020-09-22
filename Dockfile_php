@@ -1,7 +1,12 @@
+#FROM php:7.4-cli
+#ENV MYSRC_ROOT=`pwd`
+#WORKDIR ${MYSRC_ROOT}
+#COPY . ${MYSRC_ROOT}/myapp
+#CMD [ "php", "./helloWorld.php" ]
+
 FROM php:7.4-cli
-ENV MYSRC_ROOT=`pwd`
-WORKDIR ${MYSRC_ROOT}
-COPY . ${MYSRC_ROOT}/myapp
+COPY . /usr/src/myapp
+WORKDIR /usr/src/myapp
 CMD [ "php", "./helloWorld.php" ]
 
 # $ docker build -t my-php-app .
